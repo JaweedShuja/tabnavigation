@@ -1,0 +1,107 @@
+import React from 'react'
+import {
+  View,
+  Text,
+  Image
+} from 'react-native'
+
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import {createBottomTabNavigator} from 'react-navigation-tabs'
+import {Colors} from '../utils/Colors'
+
+//import Dashboard from './src/Screens/Dashboard'
+import HomeFlow from '../components/HomeFlow'
+// import Notifications from './src/Screens/Notifications'
+import NotificationsFlow from '../components/NotificationsFlow'
+// import Medlist from './src/Screens/Medlist'
+import MedlistFlow from '../components/MedlistFlow'
+// import Profile from './src/Screens/Profile'
+import ProfileFlow from '../components/ProfileFlow'
+
+
+  const TabNavigator = createBottomTabNavigator(
+    {
+      Home: HomeFlow,
+      Notifications: NotificationsFlow,
+      MedList: MedlistFlow,
+      Profile: ProfileFlow,
+    },
+    {
+      defaultNavigationOptions: ({ navigation }) => ({
+  
+  
+        tabBarIcon: ({ focused, tintColor }) => {
+          //rootStore.setNavigation(navigation);
+        //   let home = new Home()
+          var badgeCount = 0
+          if (navigation.state.params) {
+            if(navigation.state.params.badge){
+              badgeCount = navigation.state.params.badge
+            }
+           
+          }
+          //const {setParams} = this.props.navigation;
+          //setParams({ badge: badgeCount })
+  
+          const { routeName } = navigation.state;
+          let iconName;
+          let title;
+  
+          if (routeName == "Home") {
+            iconName = require('../res/images/homeIcon.png');
+            title = "Home"
+          } else if (routeName == "Profile") {
+            iconName = require("../res/images/profileIcon.png");
+            title = "Profile"
+          } else if (routeName == "Notifications") {
+            iconName = require("../res/images/notificationsIcon.png");
+            title = "Notifications"
+          } else if (routeName == "MedList") {
+            iconName = require("../res/images/medlistIcon.png");
+            title = "MedList"
+          }
+  
+          return (
+            <View style={{ alignItems: "center" }}>
+              <Image
+                style={{
+                  width: 18,
+                  height: 18,
+                  tintColor: tintColor
+                }}
+                source={iconName}
+              />
+              <Text style={{ color: tintColor, fontSize: 12, paddingTop: 3 }}>
+                {title}
+              </Text>
+              {/* {home.showBadge(title, badgeCount)} */}
+            </View>
+          );
+        }
+      }),
+      lazy: true,
+      tabBarPosition: "bottom",
+      tabBarOptions: {
+        upperCaseLabel: false,
+        activeTintColor: Colors.primary1,
+        inactiveTintColor: '#B2B2B2',
+        inactiveBackgroundColor: 'white',
+        showIcon: true,
+        showLabel: false,
+        labelStyle: {
+          fontSize: 8
+        },
+        indicatorStyle: {
+          opacity: 0
+        },
+        style: {
+          height: 55,
+          borderColor: 'white',
+          backgroundColor: 'white',
+          borderWidth: 1
+        }
+      }
+    }
+  );
+export default createAppContainer(TabNavigator);
